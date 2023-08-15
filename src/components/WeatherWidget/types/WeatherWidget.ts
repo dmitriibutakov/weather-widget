@@ -7,6 +7,8 @@ export type PositionRef = {
 };
 export type WeatherRef = {
   position: string;
+  cloudiness: number;
+  visibility: number;
   weather: Weather[];
   main: MainWeatherRef;
   wind: Wind;

@@ -14,5 +14,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import url("./assets/reset.scss");
 /* Стили для главного приложения */
 </style>

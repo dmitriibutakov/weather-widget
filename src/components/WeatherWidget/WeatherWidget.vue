@@ -5,19 +5,25 @@
       :key="idx"
       class="widget__weather weather"
     >
-      <div class="weather__country">{{ weatherRef.position }}</div>
+      <div class="weather__country">
+        {{ weatherRef.position }} <SettingsIcon />
+      </div>
       <!-- {{ weatherRef.main }} -->
       <div class="weather__condition">
-        <img :src="val.icon" alt="weather" />
+        <img :src="val.icon" alt="weather" s />
         {{ weatherRef.main.temp }}°C
       </div>
       Feels like {{ weatherRef.main.feels_like }}°C, {{ val.description }}
       <div class="weather__addition">
-        <p>humidity: {{ weatherRef.main.humidity }}</p>
-        <p>pressure: {{ weatherRef.main.pressure }}</p>
-        <p>
-          <CompassIcon :deg="weatherRef.wind.deg" /> wind:
-          {{ weatherRef.wind.speed }}
+        <p v-for="(val, idx) in weatherAddition()" :key="idx">
+          <span v-if="val.name == 'Wind'"
+            ><WindIcon :deg="weatherRef.wind.deg"
+          /></span>
+          <span v-else-if="val.name == 'Pressure'"><PressureIcon /></span>
+          <span v-else-if="val.name == 'Humidity'">Humidity:</span>
+          <span v-else-if="val.name == 'Cloudiness'"><CloudinessIcon /></span>
+          <span v-else-if="val.name == 'Visibility'">Visibility:</span>
+          {{ val.value }}
         </p>
       </div>
     </div>
@@ -32,11 +38,15 @@ import {
   WidgetRef,
   MainWeatherRef,
 } from "./types/WeatherWidget";
-import CompassIcon from "./CompassIcon/CompassIcon.vue";
+
+import PressureIcon from "@/components/Icons/PressureIcon.vue";
+import WindIcon from "@/components/Icons/WindIcon.vue";
+import CloudinessIcon from "@/components/Icons/CloudinessIcon.vue";
+import SettingsIcon from "@/components/Icons/SettingsIcon.vue";
 
 export default defineComponent({
   name: "WeatherWidget",
-  components: { CompassIcon },
+  components: { PressureIcon, WindIcon, CloudinessIcon, SettingsIcon },
   setup() {
     //стейт
     const widgetRef = ref<WidgetRef>({
@@ -49,6 +59,8 @@ export default defineComponent({
     const weatherRef = ref<WeatherRef>({
       position: "",
       weather: [],
+      cloudiness: 0,
+      visibility: 0,
       main: {
         feels_like: 0,
         humidity: 0,
@@ -90,7 +102,7 @@ export default defineComponent({
             process.env.VUE_APP_API_URL
           );
           console.log(res);
-          const { name, sys, weather, main, wind } =
+          const { name, sys, clouds, visibility, weather, main, wind } =
             await weatherApi.getResponseFromApi(
               positionRef.value.latitude,
               positionRef.value.longitude,
@@ -100,6 +112,8 @@ export default defineComponent({
           weatherRef.value.weather = weather;
           weatherRef.value.main = main;
           weatherRef.value.wind = wind;
+          weatherRef.value.cloudiness = clouds.all;
+          weatherRef.value.visibility = visibility;
           //получаем иконки
           weather.forEach((el) => {
             el.icon = `https://openweathermap.org/img/wn/${el.icon}@2x.png`;
@@ -117,10 +131,23 @@ export default defineComponent({
       }
     }
     //????
+    function weatherAddition() {
+      return [
+        { name: "Wind", value: `${weatherRef.value.wind.speed}m/s` },
+        { name: "Pressure", value: `${weatherRef.value.main.pressure}hPa` },
+        { name: "Humidity", value: `${weatherRef.value.main.humidity}%` },
+        { name: "Cloudiness", value: `${weatherRef.value.cloudiness}%` },
+        {
+          name: "Visibility",
+          value: `${(weatherRef.value.visibility / 1000).toFixed(1) + "km"}`,
+        },
+      ];
+    }
     setDataFromApi();
     return {
       weatherRef,
       widgetRef,
+      weatherAddition,
     };
   },
 });
@@ -131,6 +158,7 @@ export default defineComponent({
   font-family: "Open sans", sans-serif;
   padding: 8px 16px;
   background-color: #fff;
+  color: #0f0f0f;
   max-width: 245px;
   min-height: 245px;
   .weather {
@@ -148,16 +176,24 @@ export default defineComponent({
       font-size: 48px;
       font-weight: 300;
       img {
-        margin-right: 16px;
         width: 100px;
         height: 100px;
       }
     }
     &__addition {
+      margin: 8px 0 0 0;
       display: flex;
       flex-wrap: wrap;
-      & > * {
+      & > p {
+        font-size: 14px;
+        padding: 4px;
+        min-height: 35px;
         flex: 0 0 50%;
+        display: flex;
+        align-items: center;
+        & > span {
+          margin-right: 4px;
+        }
       }
     }
   }

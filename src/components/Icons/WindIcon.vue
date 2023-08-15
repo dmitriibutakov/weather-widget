@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="compass"
+    class="wind"
     :style="{ '--rotate': deg + 'deg' }"
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@
   >
     <g
       transform="translate(0.000000,512) scale(0.100000,-0.100000)"
-      fill="#000000"
+      fill="#0f0f0f"
       stroke="none"
     >
       <path
@@ -28,7 +28,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "CompassIcon",
+  name: "WindIcon",
   props: {
     deg: { type: Number, required: true },
   },
