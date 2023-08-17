@@ -53,5 +53,3 @@ export default defineComponent({
   name: "SettingsIcon",
 });
 </script>
-
-<style lang="scss" scoped></style>
