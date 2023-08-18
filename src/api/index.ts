@@ -1,8 +1,8 @@
-import { ApiWeatherData, WeatherApiModule } from "@/api/types";
+import { ApiWeatherData, WeatherApiModule } from "@/api/types/weatherApi";
 import axios from "axios";
 
 const weatherApi: WeatherApiModule = {
-  getResponseFromApi: (latitude, longitude, key) =>
+  getResponse: (latitude, longitude, key) =>
     axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}&units=metric`

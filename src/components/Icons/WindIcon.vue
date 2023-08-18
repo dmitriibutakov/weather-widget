@@ -1,3 +1,13 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "WindIcon",
+  props: {
+    deg: { type: Number, required: true },
+  },
+});
+</script>
 <template>
   <svg
     class="wind"
@@ -23,17 +33,6 @@
     </g>
   </svg>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "WindIcon",
-  props: {
-    deg: { type: Number, required: true },
-  },
-});
-</script>
 
 <style scoped lang="scss">
 .compass {

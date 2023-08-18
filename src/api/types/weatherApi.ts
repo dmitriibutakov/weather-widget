@@ -1,5 +1,5 @@
 export type WeatherApiModule = {
-  getResponseFromApi: (
+  getResponse: (
     latitude: number,
     longitude: number,
     key: string

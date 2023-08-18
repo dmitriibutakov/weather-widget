@@ -1,3 +1,11 @@
+<script>
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "CloudnessIcon",
+});
+</script>
+
 <template>
   <svg
     version="1.0"
@@ -25,13 +33,3 @@
     </g>
   </svg>
 </template>
-
-<script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "CloudnessIcon",
-});
-</script>
-
-<style lang="scss" scoped></style>

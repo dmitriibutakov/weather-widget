@@ -1,3 +1,11 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "PressureIcon",
+});
+</script>
+
 <template>
   <svg
     version="1.0"
@@ -42,13 +50,3 @@ m110 -641 c91 -193 135 -310 135 -361 0 -77 -48 -152 -113 -176 -69 -26 -174
     </g>
   </svg>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "PressureIcon",
-});
-</script>
-
-<style lang="scss" scoped></style>

@@ -1,3 +1,11 @@
+<script>
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "SettingsIcon",
+});
+</script>
+
 <template>
   <svg
     version="1.0"
@@ -45,11 +53,3 @@ c15 -31 43 -73 64 -94 66 -66 118 -82 356 -112 118 -14 219 -31 226 -36 7 -5
     </g>
   </svg>
 </template>
-
-<script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "SettingsIcon",
-});
-</script>
