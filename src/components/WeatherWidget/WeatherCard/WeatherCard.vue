@@ -38,7 +38,7 @@ export default defineComponent({
 <template>
   <div class="weather">
     <h5 class="weather__country">
-      {{ weatherItem.position }}
+      {{ weatherItem.position.city }}, {{ weatherItem.position.country }}
     </h5>
     <div class="weather__condition">
       <img :src="weatherItem.weatherIcons[0].icon" alt="weather" />

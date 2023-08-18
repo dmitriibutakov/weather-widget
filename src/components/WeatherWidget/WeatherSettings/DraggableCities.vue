@@ -1,42 +1,48 @@
 <script>
 import MenuIcon from "@/components/Icons/MenuIcon.vue";
 import DeleteIcon from "@/components/Icons/DeleteIcon.vue";
+import { storeToRefs } from "pinia";
+import { useWeatherStore } from "@/store/weather";
 
 export default {
   components: { DeleteIcon, MenuIcon },
-  props: {
-    settings: {
-      type: Object,
-      required: true,
-    },
-    onDragOver: { type: Function, required: true },
-    finishDrag: { type: Function, required: true },
-    startDrag: { type: Function, required: true },
+  setup() {
+    const { startDrag, finishDrag, onDragOver } = useWeatherStore();
+    const { getWeather, getOver, getDragFrom, getDragging, getStartLoc } =
+      storeToRefs(useWeatherStore());
+    return {
+      getWeather,
+      startDrag,
+      finishDrag,
+      onDragOver,
+      getOver,
+      getDragFrom,
+      getDragging,
+      getStartLoc,
+    };
   },
 };
 </script>
 
 <template>
-  <transition-group name="flip-list" tag="div" class="settings__drag drag">
+  <transition-group name="flip-list" tag="div" class="drag">
     <li
-      v-for="(val, idx) in settings.items"
+      v-for="(val, idx) in getWeather"
       @dragover="(e) => onDragOver(val, idx, e)"
       @dragend="() => finishDrag(val, idx)"
       @dragstart="(e) => startDrag(val, idx, e)"
       :class="[
         'drag__item',
         {
-          drag__item_over:
-            val === settings.over.item && val !== settings.dragFrom,
-          [settings.over.dir]:
-            val === settings.over.item && val !== settings.dragFrom,
+          drag__item_over: val === getOver.item && val !== getDragFrom,
+          [getOver.dir]: val === getOver.item && val !== getDragFrom,
         },
       ]"
       draggable="true"
       :key="idx"
     >
       <menu-icon style="cursor: grab" />
-      <span>{{ val.position }}</span>
+      <span>{{ val.position.city }}, {{ val.position.country }}</span>
       <delete-icon style="cursor: pointer" />
     </li>
   </transition-group>

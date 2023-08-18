@@ -16,12 +16,15 @@ export default defineComponent({
   },
   setup() {
     const { getWeather } = storeToRefs(useWeatherStore());
-    const { getIsLoading, getIsShowSettings } = storeToRefs(useCommonStore());
+    const { getIsLoading, getIsShowSettings, getError } = storeToRefs(
+      useCommonStore()
+    );
     const { toggleShowSettings } = useCommonStore();
     return {
       getWeather,
       toggleShowSettings,
       getIsLoading,
+      getError,
       getIsShowSettings,
     };
   },
@@ -34,14 +37,17 @@ export default defineComponent({
       <settings-icon v-if="!getIsShowSettings" />
       <close-icon v-else />
     </button>
-    <div v-if="!getIsShowSettings" class="widget__cards">
+    <div v-if="!getIsShowSettings && !getError" class="widget__cards">
       <weather-card
         v-for="(val, idx) in getWeather"
         :key="idx"
         :weather-item="val"
       />
     </div>
-    <weather-settings v-else :weather="getWeather" />
+    <p class="widget__error" v-else-if="!getIsShowSettings && getError">
+      {{ getError }}
+    </p>
+    <weather-settings v-else />
   </div>
 </template>
 
@@ -50,6 +56,7 @@ export default defineComponent({
   position: relative;
   font-family: "Open sans", sans-serif;
   padding: 8px;
+  line-height: 1.21;
   background-color: #fff;
   color: #0f0f0f;
   width: 245px;
@@ -64,6 +71,10 @@ export default defineComponent({
   &__cards {
     display: flex;
     flex-direction: column;
+  }
+
+  &__error {
+    width: 90%;
   }
 }
 </style>

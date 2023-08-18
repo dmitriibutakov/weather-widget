@@ -1,24 +1,39 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import VInput from "@/components/VInput.vue";
 import EnterIcon from "@/components/Icons/EnterIcon.vue";
+import { useWeatherStore } from "@/store/weather";
 
 export default defineComponent({
   name: "AddLocation",
   components: { EnterIcon, VInput },
-  props: {
-    searchCity: {
-      type: Function,
-      required: true,
-    },
-    cityValue: {
-      type: String,
-      required: true,
-    },
-    error: {
-      type: String,
-      required: true,
-    },
+  setup() {
+    const citySearchRef = ref<{ city: string; error: string }>({
+      city: "",
+      error: "",
+    });
+
+    function inputHandler(val: string) {
+      if (citySearchRef.value.error.length > 0) {
+        citySearchRef.value.error = "";
+      }
+      citySearchRef.value.city = val;
+    }
+
+    function searchCityHandler() {
+      if (citySearchRef.value.city.length < 4) {
+        citySearchRef.value.error = "minimum 3 symbols";
+      } else {
+        useWeatherStore().searchCity(citySearchRef.value.city);
+      }
+      citySearchRef.value.city = "";
+    }
+
+    return {
+      citySearchRef,
+      inputHandler,
+      searchCityHandler,
+    };
   },
 });
 </script>
@@ -28,14 +43,15 @@ export default defineComponent({
     <h5 class="location__title">Add Location</h5>
     <div class="location__interactive">
       <v-input
-        :value="cityValue"
-        @customChange="(value) => this.$emit('customChange', value)"
+        :input-enter-cb="searchCityHandler"
+        :value="citySearchRef.city"
+        @customChange="inputHandler"
       />
-      <button style="cursor: pointer" @click="searchCity">
+      <button style="cursor: pointer" @click="searchCityHandler">
         <enter-icon />
       </button>
     </div>
-    <p class="location__error">{{ error }}</p>
+    <p class="location__error">{{ citySearchRef.error }}</p>
   </div>
 </template>
 

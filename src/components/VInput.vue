@@ -5,6 +5,7 @@ export default defineComponent({
   name: "VInput",
   props: {
     type: { type: String, default: "text" },
+    inputEnterCb: { type: Function, required: true },
     value: {
       type: String,
       default: "",
@@ -24,7 +25,13 @@ export default defineComponent({
 </script>
 
 <template>
-  <input class="input" :value="value" :type="type" @input="handlerChange" />
+  <input
+    class="input"
+    @keyup.enter="inputEnterCb"
+    :value="value"
+    :type="type"
+    @input="handlerChange"
+  />
 </template>
 
 <style scoped lang="scss">
