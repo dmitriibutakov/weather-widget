@@ -31,6 +31,8 @@ export type ApiWeatherData = {
   id: number;
   name: string;
   cod: number;
+  latitude: number;
+  longitude: number;
 };
 
 interface ApiWeatherMain {

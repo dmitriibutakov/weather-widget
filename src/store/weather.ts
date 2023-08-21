@@ -37,7 +37,7 @@ const cityInitial = {
     speed: 0,
     deg: 0,
   },
-};
+} as WeatherData;
 export const useWeatherStore = defineStore({
   id: "weather",
   state: (): WeatherState => ({
