@@ -24,6 +24,7 @@ export const useCommonStore = defineStore({
     },
     toggleShowSettings() {
       this.isShowSettings = !this.isShowSettings;
+      this.setError("");
     },
     setError(err: string) {
       this.error = err;

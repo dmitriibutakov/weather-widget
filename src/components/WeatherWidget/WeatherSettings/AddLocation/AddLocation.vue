@@ -3,29 +3,27 @@ import { defineComponent, ref } from "vue";
 import VInput from "@/components/VInput.vue";
 import EnterIcon from "@/components/Icons/EnterIcon.vue";
 import { useWeatherStore } from "@/store/weather";
+import { useCommonStore } from "@/store/common";
+import VLoader from "@/components/VLoader.vue";
 
 export default defineComponent({
   name: "AddLocation",
-  components: { EnterIcon, VInput },
+  methods: { useCommonStore },
+  components: { VLoader, EnterIcon, VInput },
   setup() {
-    const citySearchRef = ref<{ city: string; error: string }>({
+    const citySearchRef = ref<{ city: string }>({
       city: "",
-      error: "",
     });
 
     function inputHandler(val: string) {
-      if (citySearchRef.value.error.length > 0) {
-        citySearchRef.value.error = "";
+      if (useCommonStore().getError) {
+        useCommonStore().setError("");
       }
       citySearchRef.value.city = val;
     }
 
-    function searchCityHandler() {
-      if (citySearchRef.value.city.length < 4) {
-        citySearchRef.value.error = "minimum 3 symbols";
-      } else {
-        useWeatherStore().searchCity(citySearchRef.value.city);
-      }
+    async function searchCityHandler() {
+      await useWeatherStore().addCity(citySearchRef.value.city);
       citySearchRef.value.city = "";
     }
 
@@ -48,10 +46,11 @@ export default defineComponent({
         @customChange="inputHandler"
       />
       <button style="cursor: pointer" @click="searchCityHandler">
-        <enter-icon />
+        <v-loader v-if="useCommonStore().getIsLoading" />
+        <enter-icon v-else />
       </button>
     </div>
-    <p class="location__error">{{ citySearchRef.error }}</p>
+    <p class="location__error">{{ useCommonStore().getError }}</p>
   </div>
 </template>
 

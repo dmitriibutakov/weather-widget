@@ -7,7 +7,7 @@ import { useWeatherStore } from "@/store/weather";
 export default {
   components: { DeleteIcon, MenuIcon },
   setup() {
-    const { startDrag, finishDrag, onDragOver } = useWeatherStore();
+    const { startDrag, deleteCity, finishDrag, onDragOver } = useWeatherStore();
     const { getWeather, getOver, getDragFrom, getDragging, getStartLoc } =
       storeToRefs(useWeatherStore());
     return {
@@ -15,6 +15,7 @@ export default {
       startDrag,
       finishDrag,
       onDragOver,
+      deleteCity,
       getOver,
       getDragFrom,
       getDragging,
@@ -25,7 +26,12 @@ export default {
 </script>
 
 <template>
-  <transition-group name="flip-list" tag="div" class="drag">
+  <transition-group
+    v-if="getWeather.some((el) => el.position.city)"
+    name="flip-list"
+    tag="div"
+    class="drag"
+  >
     <li
       v-for="(val, idx) in getWeather"
       @dragover="(e) => onDragOver(val, idx, e)"
@@ -43,7 +49,9 @@ export default {
     >
       <menu-icon style="cursor: grab" />
       <span>{{ val.position.city }}, {{ val.position.country }}</span>
-      <delete-icon style="cursor: pointer" />
+      <button @click="() => deleteCity(idx)">
+        <delete-icon style="cursor: pointer" />
+      </button>
     </li>
   </transition-group>
 </template>
@@ -57,7 +65,7 @@ export default {
     padding: 8px 6px;
     margin: 8px auto;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     background-color: #eeeeee;
 

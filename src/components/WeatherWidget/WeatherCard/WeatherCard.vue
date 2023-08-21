@@ -4,10 +4,18 @@ import PressureIcon from "@/components/Icons/PressureIcon.vue";
 import WindIcon from "@/components/Icons/WindIcon.vue";
 import CloudinessIcon from "@/components/Icons/CloudinessIcon.vue";
 import { WeatherData } from "@/types";
+import { useCommonStore } from "@/store/common";
+import WeatherCardSkeleton from "@/components/WeatherWidget/WeatherCard/WeatherCardSkeleton.vue";
 
 export default defineComponent({
   name: "WeatherCard",
-  components: { PressureIcon, WindIcon, CloudinessIcon },
+  methods: { useCommonStore },
+  components: {
+    WeatherCardSkeleton,
+    PressureIcon,
+    WindIcon,
+    CloudinessIcon,
+  },
   props: {
     weatherItem: {
       type: Object as () => WeatherData,
@@ -36,7 +44,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="weather">
+  <WeatherCardSkeleton v-if="useCommonStore().getIsLoading" />
+  <div v-else class="weather">
     <h5 class="weather__country">
       {{ weatherItem.position.city }}, {{ weatherItem.position.country }}
     </h5>
@@ -46,17 +55,27 @@ export default defineComponent({
     </div>
     Feels like {{ weatherItem.main.feels_like }}°C,
     {{ weatherItem.weatherIcons[0].description }}
-    <div class="weather__addition">
-      <p v-for="(val, idx) in weatherAddition()" :key="idx">
-        <span v-if="val.name == 'Wind'"
-          ><WindIcon :deg="weatherItem.wind.deg"
-        /></span>
-        <span v-else-if="val.name == 'Pressure'"><PressureIcon /></span>
-        <span v-else-if="val.name == 'Humidity'">Humidity:</span>
-        <span v-else-if="val.name == 'Cloudiness'"><CloudinessIcon /></span>
-        <span v-else-if="val.name == 'Visibility'">Visibility:</span>
-        {{ val.value }}
-      </p>
+    <div class="weather__addition addition">
+      <div
+        class="addition__wrapper"
+        v-for="(val, idx) in weatherAddition()"
+        :key="idx"
+      >
+        <div class="addition__wrapper_item item">
+          <span v-if="val.name == 'Wind'">
+            <WindIcon :deg="weatherItem.wind.deg" />
+          </span>
+          <span v-else-if="val.name == 'Pressure'">
+            <PressureIcon />
+          </span>
+          <span v-else-if="val.name == 'Humidity'">Humidity:</span>
+          <span v-else-if="val.name == 'Cloudiness'">
+            <CloudinessIcon />
+          </span>
+          <span v-else-if="val.name == 'Visibility'">Visibility:</span>
+          {{ val.value }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -75,30 +94,12 @@ export default defineComponent({
     align-items: center;
     font-size: 48px;
     font-weight: 300;
-
+    height: 100px;
     img {
       width: 100px;
       height: 100px;
     }
   }
-
-  &__addition {
-    margin: 8px 0 0 0;
-    display: flex;
-    flex-wrap: wrap;
-
-    & > p {
-      font-size: 14px;
-      padding: 4px;
-      min-height: 35px;
-      flex: 0 0 50%;
-      display: flex;
-      align-items: center;
-
-      & > span {
-        margin-right: 4px;
-      }
-    }
-  }
+  @include additionLayout;
 }
 </style>

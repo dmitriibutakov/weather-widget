@@ -1,16 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import DraggableCities from "@/components/WeatherWidget/WeatherSettings/DraggableCities.vue";
+import DraggableCities from "@/components/WeatherWidget/WeatherSettings/DraggableCities/DraggableCities.vue";
 import AddLocation from "@/components/WeatherWidget/WeatherSettings/AddLocation/AddLocation.vue";
-import { WeatherData } from "@/types";
-
-interface Settings {
-  items: WeatherData[];
-  over: { item: any; pos: any; dir: any };
-  startLoc: number;
-  dragging: boolean;
-  dragFrom: any;
-}
 
 export default defineComponent({
   name: "WeatherSettings",

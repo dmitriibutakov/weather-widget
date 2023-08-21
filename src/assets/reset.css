@@ -1,12 +1,13 @@
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  line-height: 1;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    line-height: 1;
 }
+
 html,
 body,
 div,
@@ -58,13 +59,13 @@ header,
 nav,
 section,
 video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  vertical-align: baseline;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  text-size-adjust: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: none;
 }
 
 footer,
@@ -72,54 +73,55 @@ header,
 nav,
 section,
 main {
-  display: block;
+    display: block;
 }
 
 body {
-  line-height: 1;
+    line-height: 1;
 }
 
 ol,
 ul {
-  list-style: none;
+    list-style: none;
 }
 
 blockquote,
 q {
-  quotes: none;
+    quotes: none;
 }
 
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: none;
+    content: none;
 }
 
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 input {
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
 }
+
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  height: 100%;
-  line-height: 1.34;
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    line-height: 1.34;
 }
 
 :focus,
 :active,
 :hover {
-  outline: none;
+    outline: none;
 }
 
 a,
@@ -127,23 +129,23 @@ a:visited,
 a:focus,
 a:active,
 a:hover {
-  outline: none;
-  text-decoration: none;
+    outline: none;
+    text-decoration: none;
 }
 
 input,
 button,
 textarea {
-  font-family: inherit;
-  background-color: transparent;
+    font-family: inherit;
+    background-color: transparent;
 }
 
 ol,
 ul,
 li {
-  list-style: none;
+    list-style: none;
 }
 
 img {
-  vertical-align: top;
+    vertical-align: top;
 }

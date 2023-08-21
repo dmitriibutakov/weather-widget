@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import { WeatherCondition, WeatherData } from "@/types";
-import { weatherApi } from "@/api";
+import { ninjaApi, weatherApi } from "@/api";
 import { useCommonStore } from "@/store/common";
 
-interface Over {
-  item: any;
-  pos: any;
-  dir: any;
-}
+type Over = {
+  item: WeatherData;
+  pos: number;
+  dir: "up" | "down";
+};
 
 interface WeatherState {
   weatherCollection: WeatherData[];
@@ -17,36 +17,35 @@ interface WeatherState {
   dragFrom: any;
 }
 
+const cityInitial = {
+  longitude: 0,
+  latitude: 0,
+  position: {
+    city: "",
+    country: "",
+  },
+  weatherIcons: [],
+  cloudiness: 0,
+  visibility: 0,
+  main: {
+    feels_like: 0,
+    humidity: 0,
+    pressure: 0,
+    temp: 0,
+  },
+  wind: {
+    speed: 0,
+    deg: 0,
+  },
+};
 export const useWeatherStore = defineStore({
   id: "weather",
   state: (): WeatherState => ({
-    weatherCollection: [
-      {
-        longitude: 0,
-        latitude: 0,
-        position: {
-          city: "",
-          country: "",
-        },
-        weatherIcons: [],
-        cloudiness: 0,
-        visibility: 0,
-        main: {
-          feels_like: 0,
-          humidity: 0,
-          pressure: 0,
-          temp: 0,
-        },
-        wind: {
-          speed: 0,
-          deg: 0,
-        },
-      },
-    ],
+    weatherCollection: [cityInitial],
     over: {
-      item: "",
-      pos: "",
-      dir: "",
+      item: cityInitial,
+      pos: 0,
+      dir: "down",
     },
     startLoc: 0,
     dragging: false,
@@ -65,7 +64,7 @@ export const useWeatherStore = defineStore({
       this.weatherCollection[0].longitude = position.coords.longitude;
       this.weatherCollection[0].latitude = position.coords.latitude;
     },
-
+    //fetch weather data
     async fetchWeatherData() {
       try {
         useCommonStore().setIsLoading(true);
@@ -74,78 +73,103 @@ export const useWeatherStore = defineStore({
           localStorage.getItem("weather") ??
             JSON.stringify(this.weatherCollection)
         );
-
+        console.log(this.weatherCollection, "this.weatherCollection");
         for (const value of this.weatherCollection) {
-          if (value.longitude === 0) {
+          if (!value.position.city) {
             // Set local position
-            try {
-              const position = await new Promise<GeolocationPosition>(
-                (resolve, reject) => {
-                  navigator.geolocation.getCurrentPosition(resolve, reject);
-                }
-              );
+            const position = await new Promise<GeolocationPosition>(
+              (resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+              }
+            );
+            if (position) {
               this.setLocalPosition(position);
-            } catch (error) {
-              useCommonStore().setError(
-                "Your location has been rejected. Allow location in browser"
-              );
             }
           }
-          if (!useCommonStore().getError) {
-            const { name, sys, clouds, visibility, weather, main, wind } =
-              await weatherApi.getResponse(
-                value.latitude,
-                value.longitude,
-                process.env.VUE_APP_API_URL
-              );
-            value.position.city = name;
-            value.position.country = sys.country;
-            value.weatherIcons = weather;
-            value.main = main;
-            value.wind = wind;
-            value.cloudiness = clouds.all;
-            value.visibility = visibility;
-            value.weatherIcons.forEach((el) => {
-              el.icon = `https://openweathermap.org/img/wn/${el.icon}@2x.png`;
-            });
+          const { name, sys, clouds, visibility, weather, main, wind } =
+            await weatherApi.getWeather(value.latitude, value.longitude);
+          value.position.city = name;
+          value.position.country = sys.country;
+          value.weatherIcons = weather;
+          value.main = main;
+          value.wind = wind;
+          value.cloudiness = clouds.all;
+          value.visibility = visibility;
+          value.weatherIcons.forEach((el) => {
+            el.icon = `https://openweathermap.org/img/wn/${el.icon}@2x.png`;
+          });
 
-            for (const key in value.main) {
-              const mainKey = key as keyof WeatherCondition;
-              value.main[mainKey] = Math.round(value.main[mainKey]);
-            }
+          for (const key in value.main) {
+            const mainKey = key as keyof WeatherCondition;
+            value.main[mainKey] = Math.round(value.main[mainKey]);
           }
         }
-        !useCommonStore().getError &&
-          localStorage.setItem(
-            "weather",
-            JSON.stringify(this.weatherCollection)
-          );
       } catch (e: any) {
-        throw new Error(e);
+        useCommonStore().setError(e.message);
       } finally {
         useCommonStore().setIsLoading(false);
       }
     },
-    //changeOrder
+    //change order cities
     startDrag(item: any, i: any, e: any) {
       this.startLoc = e.clientY;
       this.dragging = true;
       this.dragFrom = item;
-      console.log(item, "item");
     },
-
-    finishDrag(item: any, pos: any) {
-      this.weatherCollection.splice(pos, 1);
-      this.weatherCollection.splice(this.over.pos, 0, item);
-      this.over = { item: "", pos: "", dir: "" };
-    },
-
     onDragOver(item: any, pos: any, e: any) {
       const dir = this.startLoc < e.clientY ? "down" : "up";
       this.over = { item, pos, dir };
     },
-    searchCity(value: string) {
-      console.log(`search ${value}`);
+    finishDrag(item: any, pos: any) {
+      this.weatherCollection.splice(pos, 1);
+      this.weatherCollection.splice(this.over.pos, 0, item);
+      this.over = { item: cityInitial, pos: 0, dir: "down" };
+      this.setWeatherToLocalStorage();
+    },
+    //set weather array lo localStorage
+    setWeatherToLocalStorage() {
+      this.weatherCollection = this.weatherCollection.filter(
+        (el) => el.position.city
+      );
+      localStorage.setItem("weather", JSON.stringify(this.weatherCollection));
+    },
+    async addCity(value: string) {
+      try {
+        useCommonStore().setError("");
+        useCommonStore().setIsLoading(true);
+        const response = await ninjaApi.getCity(value);
+        if (response.length !== 0) {
+          //record first search item longitude and latitude
+          this.weatherCollection = [
+            ...this.weatherCollection,
+            {
+              ...cityInitial,
+              latitude: response[0].latitude,
+              longitude: response[0].longitude,
+              position: {
+                city: response[0].name,
+                country: response[0].country,
+              },
+            },
+          ];
+          this.setWeatherToLocalStorage();
+          //set weather to localStorage
+          await this.fetchWeatherData();
+        } else {
+          useCommonStore().setError("city not found");
+        }
+      } catch (e: any) {
+        useCommonStore().setError(e.message);
+      } finally {
+        useCommonStore().setIsLoading(false);
+      }
+    },
+    async deleteCity(id: number) {
+      this.weatherCollection = this.weatherCollection.filter(
+        (el, idx) => idx !== id
+      );
+      this.setWeatherToLocalStorage();
+      await this.fetchWeatherData();
     },
   },
 });

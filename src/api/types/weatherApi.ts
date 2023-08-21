@@ -1,9 +1,5 @@
 export type WeatherApiModule = {
-  getResponse: (
-    latitude: number,
-    longitude: number,
-    key: string
-  ) => Promise<ApiWeatherData>;
+  getWeather: (latitude: number, longitude: number) => Promise<ApiWeatherData>;
 };
 export type ApiWeatherData = {
   coord: {
@@ -36,6 +32,7 @@ export type ApiWeatherData = {
   name: string;
   cod: number;
 };
+
 interface ApiWeatherMain {
   temp: number;
   feels_like: number;
@@ -44,6 +41,7 @@ interface ApiWeatherMain {
   pressure: number;
   humidity: number;
 }
+
 interface ApiWeatherWind {
   speed: number;
   deg: number;

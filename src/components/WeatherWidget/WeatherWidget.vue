@@ -32,21 +32,23 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="!getIsLoading" class="widget">
+  <div class="widget">
     <button @click="toggleShowSettings" class="widget__settings">
       <settings-icon v-if="!getIsShowSettings" />
       <close-icon v-else />
     </button>
-    <div v-if="!getIsShowSettings && !getError" class="widget__cards">
-      <weather-card
-        v-for="(val, idx) in getWeather"
-        :key="idx"
-        :weather-item="val"
-      />
+    <div v-if="!getIsShowSettings" class="widget__cards">
+      <p class="widget__cards_error" v-if="getError && !getIsLoading">
+        {{ getError }}
+      </p>
+      <div v-else class="widget__cards_wrapper">
+        <weather-card
+          v-for="(val, idx) in getWeather"
+          :key="idx"
+          :weather-item="val"
+        />
+      </div>
     </div>
-    <p class="widget__error" v-else-if="!getIsShowSettings && getError">
-      {{ getError }}
-    </p>
     <weather-settings v-else />
   </div>
 </template>
@@ -68,13 +70,23 @@ export default defineComponent({
     top: 16px;
   }
 
-  &__cards {
+  &__cards_wrapper {
     display: flex;
     flex-direction: column;
+
+    & > *:not(:last-child) {
+      margin-bottom: 8px;
+    }
   }
 
-  &__error {
-    width: 90%;
+  &__cards_error {
+    font-size: 16px;
+    font-weight: 500;
+    color: #bd5353;
+    border: 1px solid #eee;
+    height: 100px;
+    border-radius: 8px;
+    padding: 8px 24px 4px 4px;
   }
 }
 </style>
