@@ -5,16 +5,17 @@
     document.head.appendChild(r);
   }
 
+  const baseUrl = "https://weather-widget-pi.vercel.app/";
   e("link", {
     rel: "stylesheet",
-    href: "https://weather-widget-pi.vercel.app/css/app.e83ce612.css",
+    href: baseUrl + "css/app.e83ce612.css",
   }),
     e("script", {
-      src: "https://weather-widget-pi.vercel.app/js/chunk-vendors.cec10b05.js",
+      src: baseUrl + "js/chunk-vendors.cec10b05.js",
       defer: "defer",
     }),
     e("script", {
-      src: "https://weather-widget-pi.vercel.app/js/app.d9c8e6bb.js",
+      src: baseUrl + "js/app.d9c8e6bb.js",
       defer: "defer",
     });
 })();

@@ -1,20 +1,18 @@
 (function () {
   function e(e, t) {
-    var r = document.createElement(e);
-    for (var a in t) r.setAttribute(a, t[a]);
-    document.head.appendChild(r);
+    var c = document.createElement(e);
+    for (var r in t) c.setAttribute(r, t[r]);
+    document.head.appendChild(c);
   }
 
+  const t = "https://weather-widget-pi.vercel.app/";
   e("link", {
     rel: "stylesheet",
-    href: "https://weather-widget-pi.vercel.app/css/app.e83ce612.css",
+    href: t + "css/app.e83ce612.css",
   }),
     e("script", {
-      src: "https://weather-widget-pi.vercel.app/js/chunk-vendors.cec10b05.js",
+      src: t + "js/chunk-vendors.862d1884.js",
       defer: "defer",
     }),
-    e("script", {
-      src: "https://weather-widget-pi.vercel.app/js/app.d9c8e6bb.js",
-      defer: "defer",
-    });
+    e("script", { src: t + "js/app.afacc213.js", defer: "defer" });
 })();
