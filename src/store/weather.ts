@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { WeatherCondition, WeatherData } from "@/types";
-import { ninjaApi, weatherApi } from "@/api";
 import { useCommonStore } from "@/store/common";
+import { ninjaApi, weatherApi } from "@/api";
 
 type Over = {
   item: WeatherData;
@@ -14,7 +14,7 @@ interface WeatherState {
   over: Over;
   startLoc: number;
   dragging: boolean;
-  dragFrom: any;
+  dragFrom: WeatherData;
 }
 
 const cityInitial = {
@@ -49,14 +49,14 @@ export const useWeatherStore = defineStore({
     },
     startLoc: 0,
     dragging: false,
-    dragFrom: {},
+    dragFrom: cityInitial,
   }),
   getters: {
     getWeather: (state: WeatherState): WeatherData[] => state.weatherCollection,
     getOver: (state: WeatherState): Over => state.over,
     getStartLoc: (state: WeatherState): number => state.startLoc,
     getDragging: (state: WeatherState): boolean => state.dragging,
-    getDragFrom: (state: WeatherState): any => state.dragFrom,
+    getDragFrom: (state: WeatherState): WeatherData => state.dragFrom,
   },
   actions: {
     // eslint-disable-next-line no-undef
@@ -68,12 +68,10 @@ export const useWeatherStore = defineStore({
     async fetchWeatherData() {
       try {
         useCommonStore().setIsLoading(true);
-        useCommonStore().setError("");
         this.weatherCollection = JSON.parse(
           localStorage.getItem("weather") ??
             JSON.stringify(this.weatherCollection)
         );
-        console.log(this.weatherCollection, "this.weatherCollection");
         for (const value of this.weatherCollection) {
           if (!value.position.city) {
             // Set local position
@@ -104,23 +102,24 @@ export const useWeatherStore = defineStore({
             value.main[mainKey] = Math.round(value.main[mainKey]);
           }
         }
-      } catch (e: any) {
+        // eslint-disable-next-line
+            } catch (e: any) {
         useCommonStore().setError(e.message);
       } finally {
         useCommonStore().setIsLoading(false);
       }
     },
     //change order cities
-    startDrag(item: any, i: any, e: any) {
+    startDrag(item: WeatherData, i: number, e: MouseEvent) {
       this.startLoc = e.clientY;
       this.dragging = true;
       this.dragFrom = item;
     },
-    onDragOver(item: any, pos: any, e: any) {
+    onDragOver(item: WeatherData, pos: number, e: MouseEvent) {
       const dir = this.startLoc < e.clientY ? "down" : "up";
       this.over = { item, pos, dir };
     },
-    finishDrag(item: any, pos: any) {
+    finishDrag(item: WeatherData, pos: number) {
       this.weatherCollection.splice(pos, 1);
       this.weatherCollection.splice(this.over.pos, 0, item);
       this.over = { item: cityInitial, pos: 0, dir: "down" };
@@ -135,30 +134,40 @@ export const useWeatherStore = defineStore({
     },
     async addCity(value: string) {
       try {
-        useCommonStore().setError("");
         useCommonStore().setIsLoading(true);
         const response = await ninjaApi.getCity(value);
         if (response.length !== 0) {
           //record first search item longitude and latitude
-          this.weatherCollection = [
-            ...this.weatherCollection,
-            {
-              ...cityInitial,
-              latitude: response[0].latitude,
-              longitude: response[0].longitude,
-              position: {
-                city: response[0].name,
-                country: response[0].country,
-              },
+          const newCity = {
+            ...cityInitial,
+            latitude: response[0].latitude,
+            longitude: response[0].longitude,
+            position: {
+              city: response[0].name,
+              country: response[0].country,
             },
-          ];
-          this.setWeatherToLocalStorage();
+          };
+
+          // Check if the city already exists in weatherCollection
+          const cityAlreadyExists = this.weatherCollection.some(
+            (city) => city.position.city === response[0].name
+          );
+          if (cityAlreadyExists) {
+            // Handle the error case
+            console.log("already");
+            useCommonStore().setError("This city already exists.");
+          } else {
+            // Add the new city if it doesn't already exist
+            this.weatherCollection.push(newCity);
+          }
           //set weather to localStorage
+          this.setWeatherToLocalStorage();
           await this.fetchWeatherData();
         } else {
-          useCommonStore().setError("city not found");
+          useCommonStore().setError("City not found.");
         }
-      } catch (e: any) {
+        // eslint-disable-next-line
+            } catch (e: any) {
         useCommonStore().setError(e.message);
       } finally {
         useCommonStore().setIsLoading(false);

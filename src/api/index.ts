@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ApiWeatherData, WeatherApiModule } from "@/api/types/weatherApi";
-import { ApiNinjaCityData, NinjaApiModule } from "@/api/types/ninjaApi";
+import { ApiWeatherData, WeatherApiModule } from "./types/weatherApi";
+import { ApiNinjaCityData, NinjaApiModule } from "./types/ninjaApi";
 
 const weatherApi: WeatherApiModule = {
   getWeather: (latitude, longitude) =>

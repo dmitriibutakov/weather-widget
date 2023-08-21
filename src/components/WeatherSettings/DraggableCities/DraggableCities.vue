@@ -1,8 +1,8 @@
-<script>
-import MenuIcon from "@/components/Icons/MenuIcon.vue";
-import DeleteIcon from "@/components/Icons/DeleteIcon.vue";
-import { storeToRefs } from "pinia";
+<script lang="ts">
+import DeleteIcon from "@/components/Icons/DeleteIcon/DeleteIcon.vue";
+import MenuIcon from "@/components/Icons/MenuIcon/MenuIcon.vue";
 import { useWeatherStore } from "@/store/weather";
+import { storeToRefs } from "pinia";
 
 export default {
   components: { DeleteIcon, MenuIcon },
@@ -34,6 +34,7 @@ export default {
   >
     <li
       v-for="(val, idx) in getWeather"
+      :key="val.position.city"
       @dragover="(e) => onDragOver(val, idx, e)"
       @dragend="() => finishDrag(val, idx)"
       @dragstart="(e) => startDrag(val, idx, e)"
@@ -45,7 +46,6 @@ export default {
         },
       ]"
       draggable="true"
-      :key="idx"
     >
       <menu-icon style="cursor: grab" />
       <span>{{ val.position.city }}, {{ val.position.country }}</span>

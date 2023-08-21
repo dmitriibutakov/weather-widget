@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import VInput from "@/components/VInput.vue";
-import EnterIcon from "@/components/Icons/EnterIcon.vue";
-import { useWeatherStore } from "@/store/weather";
 import { useCommonStore } from "@/store/common";
 import VLoader from "@/components/VLoader.vue";
+import EnterIcon from "@/components/Icons/EnterIcon/EnterIcon.vue";
+import VInput from "@/components/VInput.vue";
+import { useWeatherStore } from "@/store/weather";
 
 export default defineComponent({
   name: "AddLocation",

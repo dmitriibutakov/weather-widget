@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import PressureIcon from "@/components/Icons/PressureIcon.vue";
-import WindIcon from "@/components/Icons/WindIcon.vue";
-import CloudinessIcon from "@/components/Icons/CloudinessIcon.vue";
-import { WeatherData } from "@/types";
 import { useCommonStore } from "@/store/common";
-import WeatherCardSkeleton from "@/components/WeatherWidget/WeatherCard/WeatherCardSkeleton.vue";
+import WeatherCardSkeleton from "@/components/WeatherCard/WeatherCardSkeleton.vue";
+import PressureIcon from "@/components/Icons/PressureIcon/PressureIcon.vue";
+import WindIcon from "@/components/Icons/WindIcon/WindIcon.vue";
+import CloudinessIcon from "@/components/Icons/CloudinessIcon/CloudinessIcon.vue";
+import { WeatherData } from "@/types";
 
 export default defineComponent({
   name: "WeatherCard",
@@ -95,11 +95,13 @@ export default defineComponent({
     font-size: 48px;
     font-weight: 300;
     height: 100px;
+
     img {
       width: 100px;
       height: 100px;
     }
   }
+
   @include additionLayout;
 }
 </style>
