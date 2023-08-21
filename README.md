@@ -66,11 +66,11 @@ API for getting the current weather. Check out the documentation [here.](https:/
 ```html
 <script
        defer="defer"
-       src="https://weather-widget-flame.vercel.app/js/chunk-vendors.cec10b05.js"
+       src="https://weather-widget-flame.vercel.app/js/chunk-vendors.862d1884.js"
      ></script>
      <script
        defer="defer"
-       src="https://weather-widget-flame.vercel.app/js/app.4fb4f8ee.js"
+       src="https://weather-widget-flame.vercel.app/js/app.f490dc71.js"
      ></script>
      <link
        href="https://weather-widget-flame.vercel.app/css/app.524ca85e.css"
@@ -85,7 +85,7 @@ API for getting the current weather. Check out the documentation [here.](https:/
 ```html
 <html lang="">
    <head>
-     <metacharset="utf-8" />
+     <meta charset="utf-8" />
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
      <meta name="viewport" content="width=device-width,initial-scale=1" />
      <title>Vue App Widget Test</title>
