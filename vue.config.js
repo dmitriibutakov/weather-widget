@@ -20,7 +20,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       "/js": {
-        target: "https://weather-widget-flame.vercel.app",
+        target: "https://weather-widget-pi.vercel.app",
         secure: false,
         changeOrigin: true,
       },
