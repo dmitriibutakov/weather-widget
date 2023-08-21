@@ -64,18 +64,10 @@ API for getting the current weather. Check out the documentation [here.](https:/
 ## To embed on your site
 ### Copy these script tags:
 ```html
-<script
-       defer="defer"
-       src="https://weather-widget-flame.vercel.app/js/chunk-vendors.862d1884.js"
-     ></script>
-     <script
-       defer="defer"
-       src="https://weather-widget-flame.vercel.app/js/app.f490dc71.js"
-     ></script>
-     <link
-       href="https://weather-widget-flame.vercel.app/css/app.524ca85e.css"
-       rel="stylesheet"
-     />
+ <script
+        defer="defer"
+        src="https://weather-widget-pi.vercel.app/js/embed.js"
+></script>
 ```
 ### And insert the html tag:
 ```html
@@ -84,28 +76,20 @@ API for getting the current weather. Check out the documentation [here.](https:/
 ### Simple usage example:
 ```html
 <html lang="">
-   <head>
-     <meta charset="utf-8" />
-     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <meta name="viewport" content="width=device-width,initial-scale=1" />
-     <title>Vue App Widget Test</title>
-     <script
-       defer="defer"
-       src="https://weather-widget-flame.vercel.app/js/chunk-vendors.cec10b05.js"
-     ></script>
-     <script
-       defer="defer"
-       src="https://weather-widget-flame.vercel.app/js/app.4fb4f8ee.js"
-     ></script>
-     <link
-       href="https://weather-widget-flame.vercel.app/css/app.524ca85e.css"
-       rel="stylesheet"
-     />
-   </head>
-   <body>
-     <div id="app"></div>
-     <weather-widget></weather-widget>
-   </body>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vue App Widget Test</title>
+    <script
+            defer="defer"
+            src="https://weather-widget-pi.vercel.app/js/embed.js"
+    ></script>
+</head>
+<body>
+<weather-widget></weather-widget>
+</body>
 </html>
+
 
 ```

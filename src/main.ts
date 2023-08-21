@@ -1,6 +1,6 @@
 import Vue from "vue";
-import App from "./App.vue";
 import { createPinia, PiniaVuePlugin } from "pinia";
+import App from "@/App.vue";
 
 Vue.use(PiniaVuePlugin);
 Vue.config.productionTip = false;

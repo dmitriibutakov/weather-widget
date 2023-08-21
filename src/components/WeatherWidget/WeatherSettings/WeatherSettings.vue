@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import AddLocation from "@/components/WeatherSettings/AddLocation/AddLocation.vue";
-import DraggableCities from "@/components/WeatherSettings/DraggableCities/DraggableCities.vue";
+import AddLocation from "@/components/WeatherWidget/WeatherSettings/AddLocation/AddLocation.vue";
+import DraggableCities from "@/components/WeatherWidget/WeatherSettings/DraggableCities/DraggableCities.vue";
 
 export default defineComponent({
   name: "WeatherSettings",

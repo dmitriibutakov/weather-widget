@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useCommonStore } from "@/store/common";
-import WeatherCardSkeleton from "@/components/WeatherCard/WeatherCardSkeleton.vue";
+import WeatherCardSkeleton from "@/components/WeatherWidget/WeatherCard/WeatherCardSkeleton.vue";
 import PressureIcon from "@/components/Icons/PressureIcon/PressureIcon.vue";
 import WindIcon from "@/components/Icons/WindIcon/WindIcon.vue";
 import CloudinessIcon from "@/components/Icons/CloudinessIcon/CloudinessIcon.vue";
