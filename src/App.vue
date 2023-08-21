@@ -52,7 +52,7 @@ export default defineComponent({
           :weather-item="val"
         />
       </div>
-      <div class="widget__cards_empty" v-else>
+      <div class="widget__cards_empty" v-else-if="!getIsLoading">
         Add new city in the settings or confirm access to your geolocation.
       </div>
     </div>
