@@ -1,4 +1,6 @@
 # Documentation for Weather Widget
+<img src="src/assets/example.png" height="300" alt="example"/>
+### This is a weather widget where you can select multiple cities. Suitable for insertion via tag - see below
 ## Installation and launch
 
 You can use Yarn to manage dependencies and run your Vue.js application. Here are the main commands:
