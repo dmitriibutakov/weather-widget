@@ -71,7 +71,9 @@ API for getting the current weather. Check out the documentation [here.](https:/
 ```
 ### And insert the html tag:
 ```html
-<weather-widget></weather-widget>
+  <div id="app">
+    <weather-widget></weather-widget>
+</div>
 ```
 ### Simple usage example:
 ```html
@@ -87,7 +89,9 @@ API for getting the current weather. Check out the documentation [here.](https:/
     ></script>
 </head>
 <body>
-<weather-widget></weather-widget>
+<div id="app">
+    <weather-widget></weather-widget>
+</div>
 </body>
 </html>
 
