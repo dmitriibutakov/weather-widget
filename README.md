@@ -78,7 +78,7 @@ API for getting the current weather. Check out the documentation [here.](https:/
     <weather-widget></weather-widget>
 </div>
 ```
-### Simple usage example:
+### Simple HTML usage example:
 ```html
 <html lang="">
 <head>
@@ -99,4 +99,44 @@ API for getting the current weather. Check out the documentation [here.](https:/
 </html>
 
 
+```
+
+### React simple usage: 
+WeatherWidget.jsx
+``` html
+import React from 'react';
+
+const WeatherWidget = () => {
+  return (
+      <iframe
+        title="Weather Widget"
+        src="https://weather-widget-pi.vercel.app/"
+        style={{
+          width: '100%', // Ширина виджета
+          height: '400px', // Высота виджета
+          border: 'none', // Убираем рамку
+        }}
+      />
+  );
+};
+
+export default WeatherWidget;
+
+```
+### Vue simple usage:
+WeatherWidget.vue
+```html
+<template>
+    <iframe
+        title="Weather Widget"
+        src="https://weather-widget-pi.vercel.app/"
+        style="width: 100%; height: 400px; border: none;"
+    />
+</template>
+
+<script>
+export default {
+  name: 'WeatherWidget',
+};
+</script>
 ```
