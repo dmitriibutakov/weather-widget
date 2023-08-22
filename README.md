@@ -68,7 +68,7 @@ API for getting the current weather. Check out the documentation [here.](https:/
 ### Copy these script tags:
 ```html
  <script
-        defer="defer"
+        defer
         src="https://weather-widget-pi.vercel.app/js/embed.js"
 ></script>
 ```
@@ -87,7 +87,7 @@ API for getting the current weather. Check out the documentation [here.](https:/
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Vue App Widget Test</title>
     <script
-            defer="defer"
+            defer
             src="https://weather-widget-pi.vercel.app/js/embed.js"
     ></script>
 </head>
